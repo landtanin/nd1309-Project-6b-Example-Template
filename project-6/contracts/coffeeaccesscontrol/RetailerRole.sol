@@ -12,7 +12,7 @@ contract RetailerRole {
   event RetailerRemoved(address indexed account);
   
   // Define a struct 'retailers' by inheriting from 'Roles' library, struct Role
-  Roles.Role private retailer;
+  Roles.Role private retailers;
 
   // In the constructor make the address that deploys this contract the 1st retailer
   constructor() {
@@ -27,7 +27,7 @@ contract RetailerRole {
 
   // Define a function 'isRetailer' to check this role
   function isRetailer(address account) public view returns (bool) {
-    return retailer.has(account);
+    return retailers.has(account);
   }
 
   // Define a function 'addRetailer' that adds this role
@@ -42,13 +42,13 @@ contract RetailerRole {
 
   // Define an internal function '_addRetailer' to add this role, called by 'addRetailer'
   function _addRetailer(address account) internal {
-    retailer.add(account);
+    retailers.add(account);
     emit RetailerAdded(account);
   }
 
   // Define an internal function '_removeRetailer' to remove this role, called by 'removeRetailer'
   function _removeRetailer(address account) internal {
-    retailer.remove(account);
+    retailers.remove(account);
     emit RetailerRemoved(account);
   }
 }

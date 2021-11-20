@@ -12,7 +12,7 @@ contract ConsumerRole {
   event ConsumerRemoved(address indexed account);
 
   // Define a struct 'consumers' by inheriting from 'Roles' library, struct Role
-  Roles.Role private consumer;
+  Roles.Role private consumers;
 
   // In the constructor make the address that deploys this contract the 1st consumer
   constructor() {
@@ -27,7 +27,7 @@ contract ConsumerRole {
 
   // Define a function 'isConsumer' to check this role
   function isConsumer(address account) public view returns (bool) {
-    return consumer.has(account);
+    return consumers.has(account);
   }
 
   // Define a function 'addConsumer' that adds this role
@@ -42,13 +42,13 @@ contract ConsumerRole {
 
   // Define an internal function '_addConsumer' to add this role, called by 'addConsumer'
   function _addConsumer(address account) internal {
-    consumer.add(account);
+    consumers.add(account);
     emit ConsumerAdded(account);
   }
 
   // Define an internal function '_removeConsumer' to remove this role, called by 'removeConsumer'
   function _removeConsumer(address account) internal {
-    consumer.remove(account);
+    consumers.remove(account);
     emit ConsumerRemoved(account);
   }
 }

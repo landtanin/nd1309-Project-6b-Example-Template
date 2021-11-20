@@ -12,11 +12,11 @@ contract DistributorRole {
   event DistributorRemoved(address indexed account);
 
   // Define a struct 'distributors' by inheriting from 'Roles' library, struct Role
-  Roles.Role private distributor;
+  Roles.Role private distributors;
 
   // In the constructor make the address that deploys this contract the 1st distributor
   constructor() {
-
+    _addDistributor(msg.sender);
   }
 
   // Define a modifier that checks to see if msg.sender has the appropriate role
@@ -42,13 +42,13 @@ contract DistributorRole {
 
   // Define an internal function '_addDistributor' to add this role, called by 'addDistributor'
   function _addDistributor(address account) internal {
-    distributor.add(account);
+    distributors.add(account);
     emit DistributorAdded(account);
   }
 
   // Define an internal function '_removeDistributor' to remove this role, called by 'removeDistributor'
   function _removeDistributor(address account) internal {
-    distributor.remove(account);
+    distributors.remove(account);
     emit DistributorRemoved(account);
   }
 }
