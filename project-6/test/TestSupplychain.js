@@ -15,7 +15,7 @@ contract('SupplyChain', function(accounts) {
     const originFarmLongitude = "144.341490"
     var productID = sku + upc
     const productNotes = "Best beans for Espresso"
-    const productPrice = 1000; // wei
+    const productPrice = web3.utils.toWei("1", "ether"); // wei
     var itemState = 0
     const distributorID = accounts[2]
     const retailerID = accounts[3]
@@ -69,42 +69,38 @@ contract('SupplyChain', function(accounts) {
 
     // 2nd Test
     it("Testing smart contract function processItem() that allows a farmer to process coffee", async() => {
-        const supplyChain = await SupplyChain.deployed()
-        
-        // Declare and Initialize a variable for event
-        
-        
-        // Watch the emitted event Processed()
-        
+        const supplyChain = await SupplyChain.deployed();        
+        const resultBufferTwoEarly = await supplyChain.fetchItemBufferTwo.call(upc)
+        assert.equal(resultBufferTwoEarly[5], 0, 'Error: Invalid item State')
 
         // Mark an item as Processed by calling function processtItem()
-        
+        const processTx = await supplyChain.processItem(upc);
+
+        truffleAssert.eventEmitted(processTx, 'Processed');
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
-        
+        const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
 
         // Verify the result set
-        
+        assert.equal(resultBufferTwo[5], 1, 'Error: Invalid item State')
     })    
 
     // 3rd Test
     it("Testing smart contract function packItem() that allows a farmer to pack coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
-        
-        // Declare and Initialize a variable for event
-        
-        
-        // Watch the emitted event Packed()
-        
+        const resultBufferTwoEarly = await supplyChain.fetchItemBufferTwo.call(upc)
+        assert.equal(resultBufferTwoEarly[5], 1, 'Error: Invalid item State')        
 
         // Mark an item as Packed by calling function packItem()
-        
+        const tx = await supplyChain.packItem(upc);
+
+        truffleAssert.eventEmitted(tx, 'Packed');
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
-        
+        const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
 
         // Verify the result set
-        
+        assert.equal(resultBufferTwo[5], 2, 'Error: Invalid item State');
     })    
 
     // 4th Test

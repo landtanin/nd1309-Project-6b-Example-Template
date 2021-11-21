@@ -24,6 +24,7 @@ contract SupplyChain is
     // Define a public mapping 'items' that maps the UPC to an Item.
     mapping(uint256 => Item) items;
 
+    // TODO: Implement this
     // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash,
     // that track its journey through the supply chain -- to be sent from DApp.
     mapping(uint256 => string[]) itemsHistory;
@@ -181,7 +182,7 @@ contract SupplyChain is
             _originFarmInformation,
             _originFarmLatitude,
             _originFarmLongitude,
-            _upc + sku, // TODO: Perhaps you need to concatenate instead of add
+            _upc + sku, // TODO: Perhaps it should be concatenating instead of adding
             _productNotes,
             0,
             State.Harvested,
@@ -220,7 +221,7 @@ contract SupplyChain is
         onlyFarmer
     {
         // Update the appropriate fields
-        items[_upc].itemState = State.Processed;
+        items[_upc].itemState = State.Packed;
         // Emit the appropriate event
         emit Packed(_upc);
     }
