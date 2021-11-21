@@ -21,13 +21,13 @@ contract DistributorRole {
 
   // Define a modifier that checks to see if msg.sender has the appropriate role
   modifier onlyDistributor() {
-    _addDistributor(msg.sender);
+    require(isDistributor(msg.sender));
     _;
   }
 
   // Define a function 'isDistributor' to check this role
   function isDistributor(address account) public view returns (bool) {
-    require(isDistributor(msg.sender));
+    return distributors.has(account);
   }
 
   // Define a function 'addDistributor' that adds this role

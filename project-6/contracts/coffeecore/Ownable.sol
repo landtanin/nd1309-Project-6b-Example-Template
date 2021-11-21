@@ -1,7 +1,9 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 /// Provides basic authorization control
-contract Ownable {
+import "../coffeebase/SupplyChain.sol";
+
+contract Ownable is SupplyChain {
     address private origOwner;
 
     // Define an Event
@@ -14,7 +16,7 @@ contract Ownable {
     }
 
     /// Look up the address of the owner
-    function owner() public view returns (address) {
+    function getOwner() public view returns (address) {
         return origOwner;
     }
 
@@ -41,6 +43,7 @@ contract Ownable {
     }
 
     /// Define an internal function to transfer ownership
+    // TODO: How would this change the ownership of SupplyChain.sol?
     function _transferOwnership(address newOwner) internal {
         require(newOwner != address(0));
         emit TransferOwnership(origOwner, newOwner);
