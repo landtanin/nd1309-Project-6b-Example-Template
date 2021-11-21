@@ -1,9 +1,10 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "../coffeeaccesscontrol/FarmerRole.sol";
+import "../coffeeaccesscontrol/DistributorRole.sol";
 
 // Define a contract 'Supplychain'
-contract SupplyChain is FarmerRole {
+contract SupplyChain is FarmerRole, DistributorRole {
     // Define 'owner'
     address owner;
 
@@ -170,7 +171,7 @@ contract SupplyChain is FarmerRole {
         items[_upc] = Item(
           sku,
           _upc,
-          owner,
+          _originFarmerID,
           _originFarmerID,
           _originFarmName,
           _originFarmInformation,
@@ -230,6 +231,7 @@ contract SupplyChain is FarmerRole {
     {
         // Update the appropriate fields
         items[_upc].itemState = State.ForSale;
+        items[_upc].productPrice = _price;
         // Emit the appropriate event
         emit ForSale(_upc);
     }
@@ -241,15 +243,23 @@ contract SupplyChain is FarmerRole {
         public
         payable
     // Call modifier to check if upc has passed previous supply chain stage
-        
+        forSale(_upc)
     // Call modifer to check if buyer has paid enough
-
+        paidEnough(items[_upc].productPrice)
     // Call modifer to send any excess ether back to buyer
-
+        checkValue(_upc)
+        onlyDistributor
     {
         // Update the appropriate fields - ownerID, distributorID, itemState
+        items[_upc].ownerID = msg.sender;
+        items[_upc].distributorID = msg.sender;
+        items[_upc].itemState = State.Sold;
+        
         // Transfer money to farmer
+        payable(items[_upc].originFarmerID).transfer(items[_upc].productPrice);
+
         // emit the appropriate event
+        emit Sold(_upc);
     }
 
     // Define a function 'shipItem' that allows the distributor to mark an item 'Shipped'
@@ -257,12 +267,14 @@ contract SupplyChain is FarmerRole {
     function shipItem(uint256 _upc)
         public
     // Call modifier to check if upc has passed previous supply chain stage
-
+        sold(_upc)
     // Call modifier to verify caller of this function
-
+        onlyDistributor
     {
         // Update the appropriate fields
+        items[_upc].itemState = State.Shipped;
         // Emit the appropriate event
+        emit Shipped(upc);
     }
 
     // Define a function 'receiveItem' that allows the retailer to mark an item 'Received'
