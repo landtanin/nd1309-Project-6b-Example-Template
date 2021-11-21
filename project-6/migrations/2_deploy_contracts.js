@@ -11,4 +11,5 @@ module.exports = function(deployer) {
   deployer.deploy(RetailerRole);
   deployer.deploy(ConsumerRole);
   deployer.deploy(SupplyChain);
+  // TODO: Why are we not deploying Ownable?
 };
