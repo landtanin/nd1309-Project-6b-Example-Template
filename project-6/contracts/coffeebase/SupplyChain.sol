@@ -1,7 +1,9 @@
 pragma solidity >=0.7.0 <0.9.0;
 
+import "../coffeeaccesscontrol/FarmerRole.sol";
+
 // Define a contract 'Supplychain'
-contract SupplyChain {
+contract SupplyChain is FarmerRole {
     // Define 'owner'
     address owner;
 
@@ -160,9 +162,10 @@ contract SupplyChain {
         string memory _originFarmLatitude,
         string memory _originFarmLongitude,
         string memory _productNotes
-    ) public {
-        // TODO: Do we need to check that only farmer can call harvestItem?
-        // TODO: If we do, how do we call the onlyFarmer modifer in FarmerRole
+    ) 
+      public 
+      onlyFarmer
+    {
         // Add the new item as part of Harvest
         items[_upc] = Item(
           sku,
@@ -193,36 +196,42 @@ contract SupplyChain {
     function processItem(uint256 _upc)
         public
     // Call modifier to check if upc has passed previous supply chain stage
-
+        harvested(_upc)
     // Call modifier to verify caller of this function
-
+        onlyFarmer
     {
         // Update the appropriate fields
+        items[_upc].itemState = State.Processed;
         // Emit the appropriate event
+        emit Processed(_upc);
     }
 
     // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
     function packItem(uint256 _upc)
         public
     // Call modifier to check if upc has passed previous supply chain stage
-
+        processed(_upc)
     // Call modifier to verify caller of this function
-
+        onlyFarmer
     {
         // Update the appropriate fields
+        items[_upc].itemState = State.Processed;
         // Emit the appropriate event
+        emit Packed(_upc);
     }
 
     // Define a function 'sellItem' that allows a farmer to mark an item 'ForSale'
     function sellItem(uint256 _upc, uint256 _price)
         public
     // Call modifier to check if upc has passed previous supply chain stage
-
+        packed(_upc)
     // Call modifier to verify caller of this function
-
+        onlyFarmer
     {
         // Update the appropriate fields
+        items[_upc].itemState = State.ForSale;
         // Emit the appropriate event
+        emit ForSale(_upc);
     }
 
     // Define a function 'buyItem' that allows the disributor to mark an item 'Sold'
@@ -232,7 +241,7 @@ contract SupplyChain {
         public
         payable
     // Call modifier to check if upc has passed previous supply chain stage
-
+        
     // Call modifer to check if buyer has paid enough
 
     // Call modifer to send any excess ether back to buyer
