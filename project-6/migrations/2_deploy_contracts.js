@@ -1,9 +1,10 @@
 // migrating the appropriate contracts
-var FarmerRole = artifacts.require("./FarmerRole.sol");
-var DistributorRole = artifacts.require("./DistributorRole.sol");
-var RetailerRole = artifacts.require("./RetailerRole.sol");
-var ConsumerRole = artifacts.require("./ConsumerRole.sol");
-var SupplyChain = artifacts.require("./SupplyChain.sol");
+var FarmerRole = artifacts.require("FarmerRole.sol");
+var DistributorRole = artifacts.require("DistributorRole.sol");
+var RetailerRole = artifacts.require("RetailerRole.sol");
+var ConsumerRole = artifacts.require("ConsumerRole.sol");
+var SupplyChain = artifacts.require("SupplyChain.sol");
+let Ownable = artifacts.require("Ownable.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(FarmerRole);
@@ -11,5 +12,5 @@ module.exports = function(deployer) {
   deployer.deploy(RetailerRole);
   deployer.deploy(ConsumerRole);
   deployer.deploy(SupplyChain);
-  // TODO: Why are we not deploying Ownable?
+  deployer.deploy(Ownable);
 };

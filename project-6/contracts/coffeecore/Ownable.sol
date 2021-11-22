@@ -43,7 +43,6 @@ contract Ownable is SupplyChain {
     }
 
     /// Define an internal function to transfer ownership
-    // TODO: How would this change the ownership of SupplyChain.sol?
     function _transferOwnership(address newOwner) internal {
         require(newOwner != address(0));
         emit TransferOwnership(origOwner, newOwner);

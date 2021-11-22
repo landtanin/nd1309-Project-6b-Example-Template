@@ -74,7 +74,7 @@ App = {
         }
         // If no injected web3 instance is detected, fall back to Ganache
         else {
-            App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+            App.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
         }
 
         App.getMetaskAccountID();
@@ -92,7 +92,7 @@ App = {
                 return;
             }
             console.log('getMetaskID:',res);
-            App.metamaskAccountID = res[0];
+            App.metamaskAccountID = res[2];
 
         })
     },
@@ -166,7 +166,13 @@ App = {
     harvestItem: function(event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
-
+        console.log('Harvest upc: ' + App.upc); 
+        console.log('Harvest metamaskAccountID: ' + App.metamaskAccountID); 
+        console.log('Harvest originFarmName: ' + App.originFarmName); 
+        console.log('Harvest originFarmInformation: ' + App.originFarmInformation); 
+        console.log('Harvest originFarmLatitude: ' + App.originFarmLatitude); 
+        console.log('Harvest originFarmLongitude: ' + App.originFarmLongitude); 
+        console.log('Harvest productNotes: ' + App.productNotes);        
         App.contracts.SupplyChain.deployed().then(function(instance) {
             return instance.harvestItem(
                 App.upc, 

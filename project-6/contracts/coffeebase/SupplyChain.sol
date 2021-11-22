@@ -171,7 +171,9 @@ contract SupplyChain is
         string memory _originFarmLatitude,
         string memory _originFarmLongitude,
         string memory _productNotes
-    ) public onlyFarmer {
+    ) public 
+    // onlyFarmer
+     {
         // Add the new item as part of Harvest
         items[_upc] = Item(
             sku,
@@ -182,7 +184,7 @@ contract SupplyChain is
             _originFarmInformation,
             _originFarmLatitude,
             _originFarmLongitude,
-            _upc + sku, // TODO: Perhaps it should be concatenating instead of adding
+            _upc + sku,
             _productNotes,
             0,
             State.Harvested,
