@@ -89,7 +89,7 @@ App = {
                 return;
             }
             console.log('getMetaskID:',res);
-            App.metamaskAccountID = res[0]; // TODO: This is sort of hard coded. The right account has to be selected.
+            App.metamaskAccountID = res[0];
 
         })
     },

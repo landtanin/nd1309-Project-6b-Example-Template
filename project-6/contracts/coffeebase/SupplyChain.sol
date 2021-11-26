@@ -24,7 +24,6 @@ contract SupplyChain is
     // Define a public mapping 'items' that maps the UPC to an Item.
     mapping(uint256 => Item) items;
 
-    // TODO: Implement this
     // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash,
     // that track its journey through the supply chain -- to be sent from DApp.
     mapping(uint256 => string[]) itemsHistory;
