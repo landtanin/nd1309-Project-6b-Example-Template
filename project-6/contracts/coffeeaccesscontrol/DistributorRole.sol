@@ -25,6 +25,9 @@ contract DistributorRole {
     _;
   }
 
+  function makeAddress(address x) internal pure returns (address payable) {
+    return payable(address(uint160(x)));
+  }
   // Define a function 'isDistributor' to check this role
   function isDistributor(address account) public view returns (bool) {
     return distributors.has(account);

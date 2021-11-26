@@ -90,12 +90,16 @@ contract SupplyChain is
         _;
     }
 
+    function _make_payable(address x) internal pure returns (address payable) {
+        return payable(address(uint160(x)));
+    }
+
     // Define a modifier that checks the price and refunds the remaining balance
     modifier checkValue(uint256 _upc) {
         _;
         uint256 _price = items[_upc].productPrice;
         uint256 amountToReturn = msg.value - _price;
-        payable(items[_upc].consumerID).transfer(amountToReturn);
+        _make_payable(msg.sender).transfer(amountToReturn);
     }
 
     // Define a modifier that checks if an item.state of a upc is Harvested
@@ -171,8 +175,7 @@ contract SupplyChain is
         string memory _originFarmLatitude,
         string memory _originFarmLongitude,
         string memory _productNotes
-    ) public 
-    // onlyFarmer
+    ) public onlyFarmer
      {
         // Add the new item as part of Harvest
         items[_upc] = Item(
@@ -263,7 +266,7 @@ contract SupplyChain is
         items[_upc].itemState = State.Sold;
 
         // Transfer money to farmer
-        payable(items[_upc].originFarmerID).transfer(items[_upc].productPrice);
+        _make_payable(items[_upc].originFarmerID).transfer(items[_upc].productPrice);
 
         // emit the appropriate event
         emit Sold(_upc);
